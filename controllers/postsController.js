@@ -12,7 +12,7 @@ module.exports = {
       order: [['createdAt', 'DESC']],
     })
     .then(posts=>res.status(201).json(posts))
-    .catch(err=>res.status(400).send(err))
+    .catch(err=>res.status(400).send('err'))
   },
 
   getPost : async (req, res) => {
@@ -21,21 +21,25 @@ module.exports = {
     await Post.findOne({
       where:{id},
     })
-    .then(post=>res.status(201).json(post))
+    .then(post=>{
+      post?
+        res.status(201).json(post)
+      : res.status(201).send(`Post with ID '${id}' not found`)
+    })
     .catch(err=>res.status(400).send(err, 'erros msj')) 
   },
 
   addPost : async (req, res) => {
-    const {  title, content, img, category } = req.body;
+    const { title, content, image, category } = req.body;
 
-    await Post.create({ title, content, img, category})
-    .then(post=>{ res.json(post)})
+    await Post.create({ title, content, image, category})
+    .then(()=>res.sendStatus(204))
     .catch(err=>res.status(400).send(err))
   },
 
   updatePost : async (req, res) => {
     const {id} = req.params
-    const {  title, content, img, category } = req.body
+    const {  title, content, image, category } = req.body
   
     // Validate if exist id
     await Post.findOne({
@@ -44,7 +48,7 @@ module.exports = {
     .catch(err=>res.status(400).send(err))
 
     // Updated post
-    await Post.update({title, content, img, category}, {where:{id}})
+    await Post.update({title, content, image, category}, {where:{id}})
     .then(()=>res.sendStatus(204))
     .catch(err=>res.status(400).send(err))
   },
