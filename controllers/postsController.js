@@ -1,10 +1,12 @@
 const { Op, Sequelize } = require("sequelize");
+const { isImage } = require("../lib/utils");
 const {Post}  = require('../models/index');
 
 
 module.exports = {
 
   getAllPosts :  async(req, res, next) => {
+    isImage()
     await Post.findAll({
       attributes: ['id', 'title', 'image', 'category', 'createdAt'],
       order: [['createdAt', 'DESC']],
