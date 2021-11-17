@@ -8,6 +8,15 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+const DBStatus = async ()=>{
+  try {
+    await sequelize.authenticate();
+    console.log('\x1b[33m%s\x1b[0m','Connection has been established successfully.');
+  } catch (error) {
+    console.error('\x1b[36m%s\x1b[0m','Unable to connect to the database:', error);
+  }
+}
+
 
 let sequelize;
 if (config.use_env_variable) {
@@ -34,5 +43,9 @@ Object.keys(db).forEach(modelName => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+
+// check DB status
+DBStatus()
 
 module.exports = db;
