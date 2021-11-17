@@ -6,8 +6,8 @@ module.exports = {
 
   getAllPosts :  async(req, res, next) => {
     await Post.findAll({
-      order: ['createdAt', 'DESC'],
-      attributes: ['id', 'title', 'image', 'category, createdAt'],
+      attributes: ['id', 'title', 'image', 'category', 'createdAt'],
+      order: [['createdAt', 'DESC']],
     })
     .then(posts=>res.status(201).json(posts))
     .catch(err=>res.status(400).send(err))
