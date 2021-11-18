@@ -8,7 +8,7 @@ module.exports = {
   getAllPosts :  async(req, res, next) => {
     isImage()
     await Post.findAll({
-      attributes: ['id', 'title', 'image', 'category', 'createdAt'],
+      attributes: ['id', 'title', 'image', 'CategoryId', 'createdAt'],
       order: [['createdAt', 'DESC']],
     })
     .then(posts=>res.status(201).json(posts))
@@ -30,16 +30,16 @@ module.exports = {
   },
 
   addPost : async (req, res) => {
-    const { title, content, image, category } = req.body;
+    const { title, content, image, CategoryId } = req.body;
 
-    await Post.create({ title, content, image, category})
+    await Post.create({ title, content, image, CategoryId})
     .then(()=>res.sendStatus(204))
     .catch(err=>res.status(400).send(err))
   },
 
   updatePost : async (req, res) => {
     const {id} = req.params
-    const {  title, content, image, category } = req.body
+    const {  title, content, image, CategoryId } = req.body
   
     // Validate if exist Post id
     const existPost = await Post.findOne({
@@ -51,7 +51,7 @@ module.exports = {
     } else {
       
       // Updated post
-      await Post.update({title, content, image, category}, {where:{id}})
+      await Post.update({title, content, image, CategoryId}, {where:{id}})
       .then(()=>res.sendStatus(204))
       .catch(err=>res.status(400).send(err))
     }

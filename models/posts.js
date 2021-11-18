@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      this.belongsTo(models.Category);
 
     }
   };
@@ -19,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     title: {type: DataTypes.STRING, allowNull: false},
     content: {type: DataTypes.STRING, allowNull: false},
     image: {type: DataTypes.STRING, allowNull: false},
-    category: {type: DataTypes.STRING, allowNull: false},
+    CategoryId: {type: DataTypes.STRING, allowNull: false},
   }, {
     sequelize,
     modelName: 'Post',
