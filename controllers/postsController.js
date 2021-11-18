@@ -6,7 +6,7 @@ const {Post}  = require('../models/index');
 module.exports = {
 
   getAllPosts :  async(req, res, next) => {
-    isImage()
+    
     await Post.findAll({
       attributes: ['id', 'title', 'image', 'CategoryId', 'createdAt'],
       order: [['createdAt', 'DESC']],
@@ -41,6 +41,7 @@ module.exports = {
     const {id} = req.params
     const {  title, content, image, CategoryId } = req.body
   
+    !isImage(image) &&       res.status(400).send(`Image format error`)
     // Validate if exist Post id
     const existPost = await Post.findOne({
       where:{id},
