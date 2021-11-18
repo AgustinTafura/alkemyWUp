@@ -24,7 +24,7 @@ module.exports = {
     .then(post=>{
       post?
         res.status(201).json(post)
-      : res.status(400).send(`Post with ID '${id}' not found`)
+      : res.status(400).send(`Record not found`)
     })
     .catch(err=>res.status(400).send(err, 'erros msj')) 
   },
@@ -47,7 +47,7 @@ module.exports = {
     })
     
     if (!existPost) {
-      res.status(400).send(`Post with ID '${id}' not found`)
+      res.status(400).send(`Record not found`)
     } else {
       
       // Updated post
@@ -61,7 +61,10 @@ module.exports = {
     const { id } = req.params
 
     await Post.destroy({ where: {id} })
-    .then(()=>res.sendStatus(204))
+    .then(response=>{
+      !response && res.status(400).send(`Record not found`)
+      res.sendStatus(204)
+    })
     .catch(err=>res.status(400).send(err))
   },
 
