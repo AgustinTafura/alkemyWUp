@@ -7,6 +7,8 @@ var indexRouter = require('./routes/index');
 var postsRouter = require('./routes/posts');
 
 var app = express();
+require('dotenv').config();
+
 
 app.use(logger('dev'));
 app.use(express.json());
